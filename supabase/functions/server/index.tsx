@@ -2,7 +2,7 @@ import { Hono } from "npm:hono";
 import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import * as kv from "./kv_store.tsx";
-const app = new Hono().basePath('/server');
+const app = new Hono();
 
 // Enable logger
 app.use('*', logger(console.log));
@@ -20,13 +20,13 @@ app.use(
 );
 
 // Health check endpoint
-app.get("/health", (c) => {
+app.get("/make-server-a8a911aa/health", (c) => {
   return c.json({ status: "ok" });
 });
 
 // ============ Students API ============
 // Get all students
-app.get("/students", async (c) => {
+app.get("/make-server-a8a911aa/students", async (c) => {
   try {
     const students = await kv.getByPrefix("student:");
     return c.json({ students: students || [] });
@@ -37,7 +37,7 @@ app.get("/students", async (c) => {
 });
 
 // Add a student
-app.post("/students", async (c) => {
+app.post("/make-server-a8a911aa/students", async (c) => {
   try {
     const body = await c.req.json();
     const studentId = `student:${Date.now()}`;
@@ -57,7 +57,7 @@ app.post("/students", async (c) => {
 });
 
 // Update a student
-app.put("/students/:id", async (c) => {
+app.put("/make-server-a8a911aa/students/:id", async (c) => {
   try {
     const id = c.req.param("id");
     const body = await c.req.json();
@@ -77,7 +77,7 @@ app.put("/students/:id", async (c) => {
 });
 
 // Delete a student
-app.delete("/students/:id", async (c) => {
+app.delete("/make-server-a8a911aa/students/:id", async (c) => {
   try {
     const id = c.req.param("id");
     await kv.del(id);
@@ -101,7 +101,7 @@ app.delete("/students/:id", async (c) => {
 
 // ============ Schedule API ============
 // Get all schedules
-app.get("/schedules", async (c) => {
+app.get("/make-server-a8a911aa/schedules", async (c) => {
   try {
     const schedules = await kv.getByPrefix("schedule:");
     const scheduleMap: any = {};
@@ -119,7 +119,7 @@ app.get("/schedules", async (c) => {
 });
 
 // Update student schedule
-app.put("/schedules/:studentId", async (c) => {
+app.put("/make-server-a8a911aa/schedules/:studentId", async (c) => {
   try {
     const studentId = c.req.param("studentId");
     const body = await c.req.json();
@@ -140,7 +140,7 @@ app.put("/schedules/:studentId", async (c) => {
 
 // ============ Attendance API ============
 // Get all attendance records
-app.get("/attendance", async (c) => {
+app.get("/make-server-a8a911aa/attendance", async (c) => {
   try {
     const attendance = await kv.getByPrefix("attendance:");
     return c.json({ attendance: attendance || [] });
@@ -151,7 +151,7 @@ app.get("/attendance", async (c) => {
 });
 
 // Mark attendance
-app.post("/attendance", async (c) => {
+app.post("/make-server-a8a911aa/attendance", async (c) => {
   try {
     const body = await c.req.json();
     const { studentId, date, status } = body;
@@ -179,7 +179,7 @@ app.post("/attendance", async (c) => {
 });
 
 // Remove attendance
-app.delete("/attendance/:studentId/:date", async (c) => {
+app.delete("/make-server-a8a911aa/attendance/:studentId/:date", async (c) => {
   try {
     const studentId = c.req.param("studentId");
     const date = c.req.param("date");
@@ -202,7 +202,7 @@ app.delete("/attendance/:studentId/:date", async (c) => {
 
 // ============ Billing Adjustments API ============
 // Get all billing adjustments
-app.get("/billing-adjustments", async (c) => {
+app.get("/make-server-a8a911aa/billing-adjustments", async (c) => {
   try {
     const adjustments = await kv.getByPrefix("billing:");
     return c.json({ adjustments: adjustments || [] });
@@ -213,7 +213,7 @@ app.get("/billing-adjustments", async (c) => {
 });
 
 // Set billing adjustment
-app.post("/billing-adjustments", async (c) => {
+app.post("/make-server-a8a911aa/billing-adjustments", async (c) => {
   try {
     const body = await c.req.json();
     const { studentId, year, month, adjustedAmount } = body;
@@ -236,7 +236,7 @@ app.post("/billing-adjustments", async (c) => {
 });
 
 // Remove billing adjustment
-app.delete("/billing-adjustments/:studentId/:year/:month", async (c) => {
+app.delete("/make-server-a8a911aa/billing-adjustments/:studentId/:year/:month", async (c) => {
   try {
     const studentId = c.req.param("studentId");
     const year = c.req.param("year");
@@ -254,7 +254,7 @@ app.delete("/billing-adjustments/:studentId/:year/:month", async (c) => {
 
 // ============ Payment Status API ============
 // Get all payment statuses
-app.get("/payment-statuses", async (c) => {
+app.get("/make-server-a8a911aa/payment-statuses", async (c) => {
   try {
     const statuses = await kv.getByPrefix("payment:");
     return c.json({ statuses: statuses || [] });
@@ -265,7 +265,7 @@ app.get("/payment-statuses", async (c) => {
 });
 
 // Set payment status
-app.post("/payment-statuses", async (c) => {
+app.post("/make-server-a8a911aa/payment-statuses", async (c) => {
   try {
     const body = await c.req.json();
     const { studentId, year, month, isPaid } = body;
@@ -288,7 +288,7 @@ app.post("/payment-statuses", async (c) => {
 });
 
 // Remove payment status
-app.delete("/payment-statuses/:studentId/:year/:month", async (c) => {
+app.delete("/make-server-a8a911aa/payment-statuses/:studentId/:year/:month", async (c) => {
   try {
     const studentId = c.req.param("studentId");
     const year = c.req.param("year");
